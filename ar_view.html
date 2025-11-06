@@ -4,25 +4,20 @@
     <title>VR Island Presence</title>
     <meta name="description" content="A stable, immersive, and interactive WebVR experience.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- A-Frame Library -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   </head>
+
   <body style="margin: 0; overflow: hidden;">
-    
     <a-scene>
+      <!-- Assets -->
       <a-assets timeout="30000">
-        <img 
-          id="sky-panorama" 
-          src="https://raw.githubusercontent.com/aframevr/aframe/master/examples/boilerplate/panorama/puydesancy.jpg">
-        <a-asset-item 
-          id="duck-asset" 
-          src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb">
-        </a-asset-item>
-        <a-asset-item
-          id="body-asset"
-          src="https://cdn.glitch.global/c6332224-369f-4f02-959c-8509823617e1/character_running.glb">
-        </a-asset-item>
+        <!-- Local Sky and Model -->
+        <img id="sky-panorama" src="assets/sky.jpg" crossorigin="anonymous">
+        <a-asset-item id="duck-asset" src="assets/Duck.glb" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
+      <!-- Magic Orb (Interactive Object) -->
       <a-sphere
         id="magic-orb"
         position="0 1.5 -4"
@@ -31,6 +26,7 @@
         shadow
       ></a-sphere>
       
+      <!-- Animated Duck -->
       <a-entity
         gltf-model="#duck-asset"
         position="-10 2 -12"
@@ -38,6 +34,7 @@
         animation="property: position; to: 10 2 -12; dir: alternate; loop: true; dur: 12000; easing: easeInOutSine"
       ></a-entity>
 
+      <!-- Ground -->
       <a-cylinder
         color="#C2B280"
         height="0.1"
@@ -45,40 +42,44 @@
         position="0 0 0"
       ></a-cylinder>
 
+      <!-- Sky -->
       <a-sky src="#sky-panorama"></a-sky>
-      
+
+      <!-- Lights -->
       <a-light type="ambient" color="#999"></a-light>
       <a-light type="directional" intensity="0.8" position="-1 1 1"></a-light>
 
+      <!-- Player & Camera -->
       <a-entity id="player" position="0 0.5 0" wasd-controls="acceleration: 20">
         <a-camera id="camera" position="0 1.6 0">
           <a-cursor raycaster="objects: a-sphere"></a-cursor>
         </a-camera>
-
-        <a-entity
-          id="player-body"
-          gltf-model="#body-asset"
-          position="0 -0.5 0.1"
-          rotation="0 180 0"
-          scale="0.4 0.4 0.4"
-          animation-mixer="clip: HumanArmature|Run; loop: static;"
-        ></a-entity>
       </a-entity>
-
     </a-scene>
 
+    <!-- Interaction Script -->
     <script>
       window.onload = function() {
         const orb = document.querySelector('#magic-orb');
 
         orb.addEventListener('mouseenter', function () {
           orb.setAttribute('color', '#FFFF00');
-          orb.setAttribute('animation', { property: 'position', to: '0 2.5 -4', dur: 1000, easing: 'easeOutQuad' });
+          orb.setAttribute('animation', {
+            property: 'position',
+            to: '0 2.5 -4',
+            dur: 1000,
+            easing: 'easeOutQuad'
+          });
         });
 
         orb.addEventListener('mouseleave', function () {
           orb.setAttribute('color', '#FF00FF');
-          orb.setAttribute('animation', { property: 'position', to: '0 1.5 -4', dur: 500, easing: 'easeInQuad' });
+          orb.setAttribute('animation', {
+            property: 'position',
+            to: '0 1.5 -4',
+            dur: 500,
+            easing: 'easeInQuad'
+          });
         });
       }
     </script>
